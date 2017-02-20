@@ -5,7 +5,7 @@ var CensusGeocoder = require('../code/census-geocode');
 var censusApiKey = '45f5418f9ec047b91b5a4037d3a80124edb2f2a5';
 var _ = require('underscore');
 
-router.post('/single',function(req,res,next){
+router.post('/lookup',function(req,res,next){
 
     var address = req.body.address;
 
@@ -13,7 +13,8 @@ router.post('/single',function(req,res,next){
     var options = _.pick(req.body,'searchtype','returntype','benchmark','vintage');
 
         var censusGeoCode =  new CensusGeocoder(options);
-        censusGeoCode.geocode(req.body.address,function(err,result){
+
+        censusGeoCode.geocode(address,function(err,result){
                 if(err)
                 {
                     return res.json(result);

@@ -31,8 +31,8 @@ CensusGeocoder.prototype.geocode = function (value, callback)
       return callback(err);
     } else {
    
-      // status can be "OK", "ZERO_RESULTS", "OVER_QUERY_LIMIT", "REQUEST_DENIED", "INVALID_REQUEST", or "UNKNOWN_ERROR"
-      // error_message may or may not be present
+   
+      // result.errors may or may not be present
       if (result.errors) {
      
         return callback(result.errors);
