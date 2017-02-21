@@ -6,3 +6,38 @@ body {
 a {
   color: #00B7FF;
 }
+#map
+{
+  width:600px;
+  height:400px;
+  margin:0 auto;
+}
+#MapSearch
+{
+  text-align:left;
+ 
+}
+#MapSearchInputWrapper
+{
+  width:300px;
+  margin:5px auto;
+
+}
+#MapSearchInputWrapper input
+{
+  width:300px;
+   color:#666;
+}
+#MapSearch #Result
+{
+  background:#fff;
+  padding:10px;
+  margin:10px auto;
+  width:300px;
+color:#666;
+}
+
+#Result h3, #Result pre
+{
+  display:none;
+}
