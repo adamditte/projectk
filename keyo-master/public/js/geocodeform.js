@@ -85,18 +85,30 @@ var template = Handlebars.compile(source);
             } else {
               bounds.extend(place.geometry.location);
             }
-            $.post('/api/geocode/lookup',{address:place.formatted_address}).done(function(res){
-               // console.log(res);
-              //appends the address to the resultDiv
-                $($.parseHTML(template(res[0]))).appendTo(resultDiv);
-                $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
-              });
-            $.post('/api/census-geocode/lookup',{address:place.formatted_address}).done(function(res){
+            $.post('/api/geocode/lookup',{address:place.formatted_address}).done(function(googleResult){
+                $.post('/api/census-geocode/lookup',{address:place.formatted_address,returntype:'geographies'}).done(function(res){
                 console.log(res);
+                
+           var myResult = {
+             countyName:res.geographies.Counties[0].NAME,
+             censusTract:res.geographies["2010 Census Blocks"][0].TRACT,
+             censusBlock:res.geographies["2010 Census Blocks"][0].BLOCK,
+             zip:res.addressComponents.zip,
+             threeDigitZip:res.addressComponents.zip.toString().substring(0,3),
+             stateName:res.geographies.States[0].BASENAME,
+             cityName:res.addressComponents.city
+           };
+           var templateData = $.extend(googleResult[0], myResult);
+           //appends the address to the resultDiv
+                $($.parseHTML(template(templateData))).appendTo(resultDiv);
                 $($.parseHTML('<h3>Census Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
-           
+            $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(googleResult, null, 2)+'</pre>')).appendTo(resultDiv);
               });
+            
             });
+            
+              });
+            
         
         
           map.fitBounds(bounds);

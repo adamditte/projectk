@@ -1,6 +1,6 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
+  font-family:'Roboto', sans-serif;
 }
 
 a {
@@ -8,36 +8,74 @@ a {
 }
 #map
 {
-  width:600px;
-  height:400px;
-  margin:0 auto;
+ display:none;
 }
 #MapSearch
 {
-  text-align:left;
- 
+
+
 }
 #MapSearchInputWrapper
 {
-  width:300px;
-  margin:5px auto;
+
+/*
+ width:300px;
+ margin:25px auto;
+*/
 
 }
 #MapSearchInputWrapper input
 {
-  width:300px;
-   color:#666;
+
+ display:inline-block;
+ width:375px;
+ color:#a7a7a7;
 }
 #MapSearch #Result
 {
-  background:#fff;
+/*  background:#fff;*/
   padding:10px;
   margin:10px auto;
   width:300px;
-color:#666;
+color:#a7a7a7;
 }
 
 #Result h3, #Result pre
 {
   display:none;
 }
+.style{
+    font-family:'Roboto', sans-serif;
+    font-weight:lighter;
+    font-size: 36pt;
+    text-align:center;
+    color:#ffffff;
+    margin-top: 130px;
+
+}
+.styling{
+    margin-left:35%;
+    width:25%;
+    color:#a7a7a7;
+    font-family:'Roboto', sans-serif;
+    font-weight:400;
+    font-size: 18pt;
+    height:19pt;
+
+}
+.style2{
+  font-family:'Roboto', sans-serif;
+    font-weight:100;
+    font-size: 18pt;
+    text-align:center;
+    color:#ffffff;
+
+}
+
+.cright{
+    font-family:'Roboto', sans-serif;
+    font-size:14pt;
+    font-weight:normal;
+    padding-left:0;
+}
+
