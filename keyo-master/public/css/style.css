@@ -40,11 +40,12 @@ a {
 color:#a7a7a7;
 }
 
-#Result h3, #Result pre
+/*#Result h3, #Result pre
 {
   display:none;
-}
-.style{
+
+}*/
+.cover-title{
     font-family:'Roboto', sans-serif;
     font-weight:lighter;
     font-size: 36pt;
@@ -63,7 +64,7 @@ color:#a7a7a7;
     height:19pt;
 
 }
-.style2{
+.cover-tagline{
   font-family:'Roboto', sans-serif;
     font-weight:100;
     font-size: 18pt;
@@ -78,4 +79,6 @@ color:#a7a7a7;
     font-weight:normal;
     padding-left:0;
 }
+
+
 
