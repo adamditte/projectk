@@ -91,7 +91,7 @@ var template = Handlebars.compile(source);
                 $($.parseHTML(template(res[0]))).appendTo(resultDiv);
                 $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
               });
-            $.post('/api/census-geocode/lookup',{address:place.formatted_address}).done(function(res){
+            $.post('/api/census-geocode/lookup',{address:place.formatted_address,returntype:'geographies'}).done(function(res){
                 console.log(res);
                 $($.parseHTML('<h3>Census Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
            
