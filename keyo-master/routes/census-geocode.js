@@ -11,7 +11,6 @@ router.post('/lookup',function(req,res,next){
 
     //pick the parameters we want out of the body using underscore.pick
     var options = _.pick(req.body,'searchtype','returntype','benchmark','vintage');
-
         var censusGeoCode =  new CensusGeocoder(options);
 
         censusGeoCode.geocode(address,function(err,result){

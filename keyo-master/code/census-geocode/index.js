@@ -7,9 +7,10 @@ var _ = require('underscore');
 var _singleRecordUrl = 'https://geocoding.geo.census.gov/geocoder/{returntype}/{searchtype}';
 var CensusGeocoder = function CensusGeocoder(options)
 {
-    this.options = _.extend({},options,{   
+  var defaults = {   
       searchtype :'onelineaddress',
-      returntype : 'locations'});
+      returntype : 'locations'};
+    this.options = _.extend(defaults,options);
     this.apiKey = options.apiKey;
     this.httpAdapter = new HttpsAdapter(null,{});
     
