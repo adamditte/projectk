@@ -40,11 +40,11 @@ a {
 color:#a7a7a7;
 }
 
-/*#Result h3, #Result pre
+#Result h3, #Result pre
 {
-  display:none;
+  text-align: left;
 
-}*/
+}
 .cover-title{
     font-family:'Roboto', sans-serif;
     font-weight:lighter;
