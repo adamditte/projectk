@@ -21,33 +21,31 @@ var options = {
 
 var googleGeoCoder = NodeGeocoder(options);
 router.get('/', function (req, res, next) {
-    var googlePlaceId = req.query.googlePlaceId;
+    var address = req.query.address;   //if sata were posted, you would use req.body in place of req.query
 
+    var prom = loadPropertyDetails(address);
 
-    var prom = loadPropertyDetails(googlePlaceId);
-
-    prom.done(function (propertyData) {
+    prom.done(function (propertyData) {                         //this is where the rendered property details are returned
         return res.render('property-detail', { title: 'JADE-Bootstrap', propertyData: propertyData, propertyJson: JSON.stringify(propertyData, false, 2) });
     });
 
 });
 
-function loadPropertyDetails(googlePlaceId) {
+function loadPropertyDetails(address) {
 
     //https://github.com/then/promise
     //Wrap the functions that normally take a callback in a promise so we have more control      
     var censusGeoCode = new CensusGeocoder({ returntype: 'geographies' });
 
-
     var prom = new Promise(function (mainResolve, mainReject) {
         var resultData = {};
         try {
-            googleGeoCoder.geocode({ googlePlaceId: googlePlaceId }, function (err, googleResponse) {
+            googleGeoCoder.geocode({ address: address }, function (err, googleResponse) {
                 var gAddr = googleResponse[0];
                 var zillAddrSearch = gAddr.streetNumber + ' ' + gAddr.streetName;
                 resultData.googleResult = gAddr;
                 var censusProm = new Promise(function (resolve, reject) {
-                    censusGeoCode.geocode({ address: gAddr.formattedAddress }, function (err,censusResult) {
+                    censusGeoCode.geocode({ address: gAddr.formattedAddress }, function (err, censusResult) {
                         resolve(censusResult);
                     });
                 });
@@ -57,31 +55,48 @@ function loadPropertyDetails(googlePlaceId) {
                     });
                 });
                 Promise.all([censusProm, zillowProm]).then(function (allRes) {
-                    try{
-                    var censusResult = allRes[0];
-                    var zillowResult = allRes[1];
-                    resultData.zillowSearchResult = zillowResult;
-                    resultData.censusResult = censusResult;
-                    if (zillowResult.response) {
+                    try {
+                        var censusResult = allRes[0].addressMatches[0];
+                        var zillowResult = allRes[1];
+                        resultData.zillowSearchResult = zillowResult;
+                        resultData.censusResult = censusResult;
+                        var myResult = {
+                            countyName: censusResult.geographies.Counties[0].NAME,
+                            censusTract: censusResult.geographies["2010 Census Blocks"][0].TRACT,
+                            censusBlock: censusResult.geographies["2010 Census Blocks"][0].BLOCK,
+                            zip: censusResult.addressComponents.zip,
+                            threeDigitZip: censusResult.addressComponents.zip.toString().substring(0, 3),
+                            stateName: censusResult.geographies.States[0].BASENAME,
+                            cityName: censusResult.addressComponents.city
+                        };
+                         resultData = _.extend(resultData, gAddr, myResult);
+                        if (zillowResult.response) {
+                            var zillowData = {
+                            bathrooms: zillowResult.bathrooms,
+                            bedrooms: zillowResult.bedrooms,
+                            squareFeet: zillowResult.finishedSqFt,
+                            price: (zillowResult.lastSoldPrice)?zillowResult.lastSoldPrice._ : 'unknown'
+                        };
+                            resultData = _.extend(resultData, zillowData);
 
-
-                        zillow.get('GetUpdatedPropertyDetails', { zpid: zillowResult.response.results.result.zpid }).then( function (zUpdatedPropResult) {
-                            resultData.zillowUpdatedPropertyDetailsResult = zUpdatedPropResult;
-                            if (zUpdatedPropResult.response) {
-                               //set resultData stuff
-                            }
                             mainResolve(resultData);
-                        });
 
+                            // zillow.get('GetUpdatedPropertyDetails', { zpid: zillowResult.response.results.result.zpid }).then(function (zUpdatedPropResult) {
+                            //     resultData.zillowUpdatedPropertyDetailsResult = zUpdatedPropResult;
+                            //     if (zUpdatedPropResult.response) {
+                            //         //set resultData stuff
+                            //     }
+                            //     mainResolve(resultData);
+                            // });
+
+                        }
+                        else {
+                            mainResolve(resultData);
+                        }
                     }
-                    else {
-                        mainResolve(resultData);
+                    catch (err) {
+                        mainReject(err);
                     }
-                }
-                catch(err)
-                {
-                    mainReject(err);
-                }
                 });
             });
         }

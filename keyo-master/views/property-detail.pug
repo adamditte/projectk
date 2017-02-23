@@ -1,4 +1,16 @@
 extends layouts/starter
 
 block content
-    div #{propertyJson}
+    ul
+        li Address: #{propertyData.formattedAddress}
+        li City:#{propertyData.cityName}
+        li State:#{propertyData.stateName}
+        li Zip: #{propertyData.zipcode}
+        li 3 Digit Zip:#{propertyData.threeDigitZip}
+        li County:#{propertyData.countyName}
+        li Latitude: #{propertyData.latitude}
+        li Longitude: #{propertyData.longitude}
+        li Neighborhood: #{propertyData.extra.neighborhood}
+        li Census Tract:#{propertyData.censusTract}
+        li Census Block:#{propertyData.censusBlock}
+    //- div #{propertyJson}

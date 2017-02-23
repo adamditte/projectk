@@ -32,7 +32,7 @@ app.use('/', routes);
 app.use('/api/geocode',geocode);
 app.use('/api/census-geocode',censusGeocode);
 app.use('/api/zillow',zillow);
-app.use('/propertyDetail',propertyDetail);
+app.use('/property-detail',propertyDetail);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
