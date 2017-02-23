@@ -1,0 +1,23 @@
+extends layout
+append styles
+	// Custom styles for this template
+	link(href='/css/starter-template.css', rel='stylesheet')
+block body
+	.site-wrapper
+		.site-wrapper-inner
+			.masthead.clearfix
+				.inner
+					h3.masthead-brand Cover
+					nav
+						ul.nav.masthead-nav
+							li.active 
+								a(href="/") Home
+							li
+								a(href="#") Features
+							li
+								a(href="#") Contact
+			.container
+				.starter-template
+					block content
+	
+

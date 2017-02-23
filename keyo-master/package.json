@@ -13,6 +13,7 @@
     "morgan": "~1.5.1",
     "node-geocoder": "^3.16.0",
     "node-zillow": "^1.0.1",
+    "promise": "^7.1.1",
     "pug": "~2.0.0-beta10",
     "pug-bootstrap": "0.0.11",
     "request": "^2.79.0",
