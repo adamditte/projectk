@@ -11,6 +11,7 @@ var geocode = require('./routes/geocode');
 var censusGeocode = require('./routes/census-geocode');
 var addressSearch = require('./routes/address-search');
 var zillow = require('./routes/zillow');
+var propertyDetail = require('./routes/property-detail');
 var app = express();
 
 app.use('/bower_components', express.static(path.join(__dirname, 'bower_components/')))
@@ -31,6 +32,7 @@ app.use('/', routes);
 app.use('/api/geocode',geocode);
 app.use('/api/census-geocode',censusGeocode);
 app.use('/api/zillow',zillow);
+app.use('/propertyDetail',propertyDetail);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var  http = require('http');
 var CensusGeocoder = require('../code/census-geocode');
 var censusApiKey = '45f5418f9ec047b91b5a4037d3a80124edb2f2a5';
 var _ = require('underscore');

@@ -114,7 +114,7 @@ var template = Handlebars.compile(source);
                 $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(googleResult, null, 2)+'</pre>')).appendTo(resultDiv);
                 $($.parseHTML('<h3>Zillow Api Data</h3><pre>'+ JSON.stringify(zillowResult, null, 2)+'</pre>')).appendTo(resultDiv);;
                 
-                
+               
               });
             
             });
