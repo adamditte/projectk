@@ -33,14 +33,14 @@ var template = Handlebars.compile(source);
         var searchBox = new google.maps.places.SearchBox(input);
        // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-        // Bias the SearchBox results towards current map's viewport.
+        // Bias the SearchBox results towards current map's viewport. This is an event handler for when bounds change.
         map.addListener('bounds_changed', function() {
           searchBox.setBounds(map.getBounds());
         });
 
         var markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
+        // more details for that place. This is an event handler for when places change
         searchBox.addListener('places_changed', function() {
           var places = searchBox.getPlaces();
 
@@ -53,7 +53,7 @@ var template = Handlebars.compile(source);
             marker.setMap(null);
           });
           markers = [];
-        console.log(places[0]);
+        
           // For each place, get the icon, name and location.
           var bounds = new google.maps.LatLngBounds();
           var resultDiv = $('#Result');
@@ -63,6 +63,7 @@ var template = Handlebars.compile(source);
               console.log("Returned place contains no geometry");
               return;
             }
+            // Creates marker icon
             var icon = {
               url: place.icon,
               size: new google.maps.Size(71, 71),
@@ -71,7 +72,7 @@ var template = Handlebars.compile(source);
               scaledSize: new google.maps.Size(25, 25)
             };
 
-            // Create a marker for each place.
+            // Create a marker for each place. This is adding to the markers array.
             markers.push(new google.maps.Marker({
               map: map,
               icon: icon,
@@ -85,19 +86,42 @@ var template = Handlebars.compile(source);
             } else {
               bounds.extend(place.geometry.location);
             }
-            $.post('/api/geocode/lookup',{address:place.formatted_address}).done(function(res){
-               // console.log(res);
-              //appends the address to the resultDiv
-                $($.parseHTML(template(res[0]))).appendTo(resultDiv);
-                $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
-                window.location.href = '/propertydetail/?googlePlaceId=' + res[0].extra.googlePlaceId;
+            // This is where the data actually comes from. 
+            $.post('/api/geocode/lookup',{address:place.formatted_address}).done(function(googleResult){
+              console.log(googleResult); 
+              var gAddress = googleResult[0];
+              var zillowParams = {
+                address:gAddress.streetNumber + ' ' + gAddress.streetName,
+                citystatezip:gAddress.zipcode
+              };
+
+            $.post('/api/zillow/getdeepsearchresults', zillowParams).done(function(zillowResult){
+            $.post('/api/census-geocode/lookup',{address:place.formatted_address,returntype:'geographies'}).done(function(censusResult){
+                
+           var myResult = {
+             countyName:censusResult.geographies.Counties[0].NAME,
+             censusTract:censusResult.geographies["2010 Census Blocks"][0].TRACT,
+             censusBlock:censusResult.geographies["2010 Census Blocks"][0].BLOCK,
+             zip:censusResult.addressComponents.zip,
+             threeDigitZip:censusResult.addressComponents.zip.toString().substring(0,3),
+             stateName:censusResult.geographies.States[0].BASENAME,
+             cityName:censusResult.addressComponents.city
+           };
+           var templateData = $.extend(googleResult[0], myResult);
+           //appends the address to the resultDiv
+                $($.parseHTML(template(templateData))).appendTo(resultDiv);
+                $($.parseHTML('<h3>Census Data</h3><pre>'+ JSON.stringify(censusResult, null, 2)+'</pre>')).appendTo(resultDiv);
+                $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(googleResult, null, 2)+'</pre>')).appendTo(resultDiv);
+                $($.parseHTML('<h3>Zillow Api Data</h3><pre>'+ JSON.stringify(zillowResult, null, 2)+'</pre>')).appendTo(resultDiv);;
+                
+               
               });
-            $.post('/api/census-geocode/lookup',{address:place.formatted_address,returntype:'geographies'}).done(function(res){
-                console.log(res);
-                $($.parseHTML('<h3>Census Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
-           
-              });
+            
             });
+            
+             });
+             });
+            
         
         
           map.fitBounds(bounds);

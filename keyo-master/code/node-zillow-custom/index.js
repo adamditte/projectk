@@ -1,10 +1,4 @@
-/**
- * node-zillow
- * http://github.com/ralucas/node-zillow
- *
- * Copyright (c) 2014 Richard Lucas
- * Licensed under the MIT license.
- */
+// this file is created to parse the zillow api response better than the package does
 
 'use strict';
 

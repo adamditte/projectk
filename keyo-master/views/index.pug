@@ -1,21 +1,33 @@
 extends layouts/cover
 
 block content
-    h1 Hello. Please enter an address to get info about the location.
+
     div#MapSearch
       div#MapSearchInputWrapper
-        input(id="pac-input", class="controls", type="text", placeholder="Search for Address")
-    
-      
+      form
+        input.stylinginput(id="pac-input", class="controls", type="text", placeholder="Enter address")
+        |
+        input.search-query.button(type='submit',value=' ')
+
+
+
       div(id="map")
       script(id="SearchResultTemplate", type="text/x-handlebars-template")
           ul
               li Address: {{formattedAddress}}
+              li City:{{cityName}}
+              li State:{{stateName}}
               li Zip: {{zipcode}}
+              li 3 Digit Zip:{{threeDigitZip}}
+              li County:{{countyName}}
               li Latitude: {{latitude}}
               li Longitude: {{longitude}}
-              li County: {{administrativeLevels.level2long}}
               li Neighborhood: {{extra.neighborhood}}
+              li Census Tract:{{censusTract}}
+              li Census Block:{{censusBlock}}
+              
+
+              
       div(id="Result")
 append scripts
     script(src="/bower_components/handlebars/handlebars.min.js")

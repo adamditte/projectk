@@ -1,29 +1,33 @@
 extends layout
 append styles
-	//	!-- Custom styles for this template --
-	link(href="/css/cover.css", rel="stylesheet")
+    //    !-- Custom styles for this template --
+    link(href="/css/cover.css", rel="stylesheet")
 
 block body
-	.site-wrapper
-		.site-wrapper-inner
-			.cover-container
-				.masthead.clearfix
-					.inner
-						h3.masthead-brand Cover
-						nav
-							ul.nav.masthead-nav
-								li.active 
-									a(href="#") Home
-								li
-									a(href="#") Features
-								li
-									a(href="#") Contact
-				.inner.cover
-					h1.cover-heading Cover your page.
-					p.lead Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.
-					p.lead
-					a(href="#", class="btn btn-lg btn-default") Learn more
-					block content
-				.mastfoot
-					.inner
-						p Cover template for <a href="http://getbootstrap.com">Bootstrap </a>, by <a href="https://twitter.com/mdo">@mdo</a>.
+    .site-wrapper
+        .site-wrapper-inner
+            .cover-container
+                .masthead.clearfix
+                    .inner
+                        a.pull-left(href='#')
+                           img(src='../images/top_bar_keyo_logo.png')
+                    nav
+                            ul.nav.masthead-nav
+                                li.active
+                                    a.styleline(href="#") about
+                                li
+                                    a.styleline(href="#") jobs
+                                li
+                                    a(href="#") blog
+                .inner.cover
+                     h1.cover-title The most advanced virtual assistant for realtors
+                      h3.cover-tagline
+                       | You will be notified when
+                       b  keyo
+                       |  is ready to use.
+                       br
+                       |In the meantime use this handy tool. It's on us.
+                       block content
+                .mastfoot
+                    .inner
+                    p.cright  &copy; #{new Date().getFullYear()} keyo
