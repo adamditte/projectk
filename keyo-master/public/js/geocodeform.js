@@ -90,6 +90,7 @@ var template = Handlebars.compile(source);
               //appends the address to the resultDiv
                 $($.parseHTML(template(res[0]))).appendTo(resultDiv);
                 $($.parseHTML('<h3>Google Api Data</h3><pre>'+ JSON.stringify(res, null, 2)+'</pre>')).appendTo(resultDiv);
+                window.location.href = '/propertydetail/?googlePlaceId=' + res[0].extra.googlePlaceId;
               });
             $.post('/api/census-geocode/lookup',{address:place.formatted_address,returntype:'geographies'}).done(function(res){
                 console.log(res);

@@ -49,9 +49,15 @@ router.all('/getcomps',function(req,res,next){
 router.all('/getdeepcomps',function(req,res,next){
     //https://www.zillow.com/howto/api/GetDeepComps.htm
  var parameters = _.pick(_.extend(req.query,req.body),['zpid','count','rentzestimate']);
+       try{
         zillow.get('GetDeepComps', parameters).then(function(results) {
             return res.json(results.response);
         });
+       }
+       catch(err)
+       {
+            return res.json(err);
+       }
 });
 router.all('/getdeepsearchresults',function(req,res,next){
     //https://www.zillow.com/howto/api/GetDeepSearchResults.htm
@@ -72,7 +78,14 @@ router.all('/getupdatedpropertydetails',function(req,res,next){
     //https://www.zillow.com/howto/api/GetUpdatedPropertyDetails.htm
    var parameters = _.pick(_.extend(req.query,req.body),['zpid']);
         zillow.get('GetUpdatedPropertyDetails', parameters).then(function(results) {
-            return res.json(results.response);
+             if(results.response)
+            {
+                return res.json(results.response);
+            }
+            else{
+                // there was an error or it couldn't find the address;
+                res.json(results);
+            }
         });
 });
 router.all('/getregionchildren',function(req,res,next){
